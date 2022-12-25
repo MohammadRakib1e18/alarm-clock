@@ -10,9 +10,8 @@ body {
 }
 
 .container {
-  width: 50%;
   background-color: white;
-  padding: 10px 10px 30px;
+  padding: 20px 20px 30px;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
@@ -24,7 +23,7 @@ h1 {
 
 .select-bar,
 .setting-alarm {
-  width: 400px;
+  width: 100%;
   display: flex;
   justify-content: space-between;
   margin-top: -10px;
@@ -51,7 +50,7 @@ select {
 .all-alarms {
   margin-top: 30px;
 }
-.all-alarms h2{
+.all-alarms h2 {
   margin-bottom: -5px;
 }
 #upcoming-alarms {
@@ -65,17 +64,40 @@ select {
   padding: 5px 10px;
   background-color: rgb(224, 222, 222);
 }
-.delete{
-    background-color: rgb(201, 23, 23);
-    color: white;
-    cursor: pointer;
-    padding: 2px 10px;
-    border: 1px solid rgb(136, 134, 134);
+.delete {
+  background-color: rgb(201, 23, 23);
+  color: white;
+  cursor: pointer;
+  padding: 2px 10px;
+  border: 1px solid rgb(136, 134, 134);
 }
-.delete:hover{
-    background-color: red;
+.delete:hover {
+  background-color: red;
 }
 
-#hidden{
+#hidden {
   display: none;
+}
+
+@media only screen and (max-width: 700px) {
+  .container {
+    width: 80%;
+  }
+  .select-bar,
+  .setting-alarm {
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-top: -10px;
+    gap: 5px;
+  }
+  h1 {
+    font-size: 3rem;
+  }
+  select {
+    font-size: 0.8rem;
+    padding: 5px 10px;
+    width: 100%;
+  }
 }

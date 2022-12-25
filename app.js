@@ -7,21 +7,34 @@ let currentTime = "";
 let pausedTime = "";
 let audio = new Audio("./ringtone.mp3");
 let upcomingAlarmList = [];
+let days = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+];
 
+for (let i = 0; i < 7; i++) {
+  let option = `<option value="${days[i]}">${days[i]}</option>`;
+  allSelects[0].firstElementChild.insertAdjacentHTML("afterend", option);
+}
 for (let i = 1; i <= 12; i++) {
   let h = i < 10 ? (i = "0" + i) : i;
   let option = `<option value="${h}">${h}</option>`;
-  allSelects[0].firstElementChild.insertAdjacentHTML("afterend", option);
+  allSelects[1].firstElementChild.insertAdjacentHTML("afterend", option);
 }
 for (let i = 0; i < 60; i++) {
   let m = i < 10 ? (i = "0" + i) : i;
   let option = `<option value="${m}">${m}</option>`;
-  allSelects[1].firstElementChild.insertAdjacentHTML("afterend", option);
+  allSelects[2].firstElementChild.insertAdjacentHTML("afterend", option);
 }
 for (let i = 0; i < 2; i++) {
   let ampm = i === 1 ? "PM" : "AM";
   let option = `<option value="${ampm}">${ampm}</option>`;
-  allSelects[2].firstElementChild.insertAdjacentHTML("afterend", option);
+  allSelects[3].firstElementChild.insertAdjacentHTML("afterend", option);
 }
 
 const deleteAlarm = (id, selectedTime) => {
@@ -30,11 +43,11 @@ const deleteAlarm = (id, selectedTime) => {
 
   const ul = deleteList.parentNode;
   ul.removeChild(deleteList);
-  let index =i= -1;
+  let index = (i = -1);
   for (let alarm of upcomingAlarmList) {
     i++;
     if (alarm.selectedTime == deletedTime) {
-      index=i;
+      index = i;
       break;
     }
   }
@@ -46,7 +59,6 @@ const deleteAlarm = (id, selectedTime) => {
 const showAlarm = () => {
   document.getElementById("upcoming-alarms").innerHTML = `<span> </span>`;
   upcomingAlarms = document.getElementById("upcoming-alarms");
-  console.log(upcomingAlarms);
   for (let slot of upcomingAlarmList) {
     let newAlarm = `<li>
       <span>${slot.selectedTime}</span> <button onclick='deleteAlarm(this, selectedTime)' class="delete">Delete</button>
@@ -57,6 +69,8 @@ const showAlarm = () => {
 
 setInterval(() => {
   const time = new Date();
+  let dayIndex = time.getDay();
+  let day = days[dayIndex];
   let hours = time.getHours();
   let mins = time.getMinutes();
   let seconds = time.getSeconds();
@@ -72,7 +86,7 @@ setInterval(() => {
   seconds = seconds < 10 ? (seconds = "0" + seconds) : seconds;
 
   timeSlot.innerText = `${hours}:${mins}:${seconds} ${ampm}`;
-  currentTime = `${hours}:${mins} ${ampm}`;
+  currentTime = `${day} ${hours}:${mins} ${ampm}`;
 
   found = false;
   for (let alarm of upcomingAlarmList) {
@@ -87,8 +101,9 @@ setInterval(() => {
 }, 1000);
 
 document.querySelector("#set-alarm").addEventListener("click", () => {
-  selectedTime = `${allSelects[0].value}:${allSelects[1].value} ${allSelects[2].value}`;
+  selectedTime = `${allSelects[0].value} ${allSelects[1].value}:${allSelects[2].value} ${allSelects[3].value}`;
   if (
+    selectedTime.includes("Day") || 
     selectedTime.includes("Hour") ||
     selectedTime.includes("Minute") ||
     selectedTime.includes("AM/PM")
@@ -122,29 +137,32 @@ document.querySelector("#stop-alarm").addEventListener("click", () => {
 });
 
 document.querySelector("#snooze-alarm").addEventListener("click", () => {
-  let index =i= -1;
+  let index = (i = -1);
   for (let alarm of upcomingAlarmList) {
     i++;
     if (alarm.selectedTime == currentTime) {
-      index=i;
+      index = i;
       break;
     }
   }
   if (index > -1) {
-    if(upcomingAlarmList[index].snoozeCnt==3){
-      return alert('Maximum Snooze counter (3) has been reached!');
+    if (upcomingAlarmList[index].snoozeCnt == 3) {
+      return alert("Maximum Snooze counter (3) has been reached!");
     }
     upcomingAlarmList[index].snoozeCnt++;
 
     const time = new Date();
+    let dayIndex = time.getDay();
+    let day = days[dayIndex];
     let hours = time.getHours();
     let mins = time.getMinutes() + 3;
     if (mins >= 60) {
       mins -= 60;
       hours++;
     }
-    if (hours > 24) {
+    if (hours >= 24) {
       hours = 24;
+      day=days[(dayIndex+1)%7];
     }
 
     let ampm = "AM";
@@ -155,10 +173,9 @@ document.querySelector("#snooze-alarm").addEventListener("click", () => {
     if (!hours) hours = 12;
     hours = hours < 10 ? (hours = "0" + hours) : hours;
     mins = mins < 10 ? (mins = "0" + mins) : mins;
-    upcomingAlarmList[index].selectedTime = `${hours}:${mins} ${ampm}`;
+    upcomingAlarmList[index].selectedTime = `${day} ${hours}:${mins} ${ampm}`;
     showAlarm();
-  }
-  else{
+  } else {
     return alert("No Alarm is ringing right now!!!");
   }
 });
