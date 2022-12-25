@@ -155,7 +155,7 @@ document.querySelector("#snooze-alarm").addEventListener("click", () => {
     let dayIndex = time.getDay();
     let day = days[dayIndex];
     let hours = time.getHours();
-    let mins = time.getMinutes() + 3;
+    let mins = time.getMinutes() + 5;
     if (mins >= 60) {
       mins -= 60;
       hours++;
