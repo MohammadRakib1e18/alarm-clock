@@ -51,6 +51,9 @@ select {
 .all-alarms {
   margin-top: 30px;
 }
+.all-alarms h2{
+  margin-bottom: -5px;
+}
 #upcoming-alarms {
   list-style-type: none;
   padding: 5px;
@@ -71,4 +74,8 @@ select {
 }
 .delete:hover{
     background-color: red;
+}
+
+#hidden{
+  display: none;
 }
