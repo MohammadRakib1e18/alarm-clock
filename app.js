@@ -17,7 +17,7 @@ let days = [
   "Saturday",
 ];
 
-for (let i = 0; i < 7; i++) {
+for (let i = 6; i>=0; i--) {
   let option = `<option value="${days[i]}">${days[i]}</option>`;
   allSelects[0].firstElementChild.insertAdjacentHTML("afterend", option);
 }
@@ -150,6 +150,7 @@ document.querySelector("#snooze-alarm").addEventListener("click", () => {
       return alert("Maximum Snooze counter (3) has been reached!");
     }
     upcomingAlarmList[index].snoozeCnt++;
+    
 
     const time = new Date();
     let dayIndex = time.getDay();
@@ -175,6 +176,7 @@ document.querySelector("#snooze-alarm").addEventListener("click", () => {
     mins = mins < 10 ? (mins = "0" + mins) : mins;
     upcomingAlarmList[index].selectedTime = `${day} ${hours}:${mins} ${ampm}`;
     showAlarm();
+    alert("Snoozed for 5 minutes");
   } else {
     return alert("No Alarm is ringing right now!!!");
   }
