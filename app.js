@@ -1,8 +1,10 @@
 const allSelects = document.querySelectorAll("select");
 const timeSlot = document.getElementById("time");
+const upcomingAlarms = document.getElementById("upcoming-alarms");
 let selectedTime;
 let isAlarmSet = false;
 let audio = new Audio("./ringtone.mp3");
+let upcomingAlarmList=[];
 
 for (let i = 1; i <= 12; i++) {
   let h = i < 10 ? (i = "0" + i) : i;
@@ -19,6 +21,20 @@ for (let i = 0; i < 2; i++) {
   let option = `<option value="${ampm}">${ampm}</option>`;
   allSelects[2].firstElementChild.insertAdjacentHTML("afterend", option);
 }
+
+const greet = (id) =>{
+  const deleteList = id.parentNode;
+  const ul = deleteList.parentNode;
+  ul.removeChild(deleteList);
+}
+
+const addToList = (selectedTime) => {
+    let newAlarm = `<li>
+      <span>${selectedTime}</span> <button onclick='greet(this)' class="delete">Delete</button>
+    </li>`;
+    upcomingAlarms.firstElementChild.insertAdjacentHTML("afterend", newAlarm);
+}
+
 
 setInterval(() => {
   const time = new Date();
@@ -50,6 +66,12 @@ document.querySelector("#set-alarm").addEventListener("click", () => {
     isAlarmSet = false;
   }
   selectedTime = `${allSelects[0].value}:${allSelects[1].value} ${allSelects[2].value}`;
+  upcomingAlarmList.push(selectedTime);
+  addToList(selectedTime);
 
   isAlarmSet = true;
+});
+
+document.querySelector("#stop-alarm").addEventListener("click", () => {
+  selectedTime = "";
 });
